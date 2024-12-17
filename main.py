@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_security import Security
-from flask_cors import CORS
+
 from application.models import db
 from config import DevelopmentConfig
 from application.resources import api
@@ -11,7 +11,7 @@ import flask_excel as excel
 def create_app(): #defining app instance function
     app = Flask(__name__)
     app.config.from_object(DevelopmentConfig)
-    CORS(app)
+    
     db.init_app(app) #initializing the database
     api.init_app(app) #initializing the api instance
     excel.init_excel(app)
