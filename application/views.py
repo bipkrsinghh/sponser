@@ -4,7 +4,7 @@ from flask_security import auth_required,roles_required
 from .models import db,User, Campaign,Ad
 from flask_restful import marshal_with,fields,marshal
 from .sec import datastore
-from werkzeug.security import check_password_hash,generate_password_hash
+#from werkzeug.security import check_password_hash,generate_password_hash
 from datetime import datetime,date
 from .tasks import say_hello
 import flask_excel as excel
@@ -89,7 +89,7 @@ def user_login():
     if not user:
         return jsonify({"message":"User not found"}),404
     
-    if check_password_hash(user.password,data.get('password')):
+    if user.password ==data.get('password') :
         return {"token":user.get_auth_token(),"email":user.email,"role":user.roles[0].name}
     else:
         return jsonify({"message":"Wrong password"}),404
@@ -116,7 +116,7 @@ def registration():
         datastore.create_user(email=email,username=data.get('username'),name=data.get('name'),active=active,
                               roles=[data.get('role')],company_name= data.get('company_name'),
                               industry=data.get('industry_type'),category=data.get('category'),
-                              niche=data.get('niche'),reach=data.get('reach'),password=generate_password_hash(data.get('password')))   
+                              niche=data.get('niche'),reach=data.get('reach'),password=data.get('password'))   
         db.session.commit()
         return jsonify({"message":"Successfully registered"}),200
     
